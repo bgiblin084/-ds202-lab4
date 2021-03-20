@@ -159,14 +159,26 @@ biography19 <- read_excel('cyclonesFootball2019.xlsx', sheet='Biography')
       count(State)
       
     ```
-
+    
+    The above shows all of the defenders and offenders that are from each state, both graphically and in a tabular format.
 
 2.  How does the performance of quarterback Brock Purdy relate to the performance of the ISU team?
 
     Answer:
-    Couldn't figure out how to solve this :(
+    ```{R}
+    offClean %>%
+      select(-Passing_TD) %>%
+      left_join(
+        offClean %>%
+          filter(Name == 'Purdy, Brock') %>%
+          select(Opponent_Opponent, Passing_TD),
+        by='Opponent_Opponent'
+      ) %>%
+      mutate(Passing_TD=as.factor(Passing_TD)) %>%
+      ggplot(aes(x=Passing_TD, y=Receiving_YDS)) + geom_boxplot()
+    ```
     
-    
+    The number of receiving Yards seems to slightly increase on average as the amount of touchdowns thrown by Purdy increase. This would make sense because to throw more touchdowns, the receivers would also need to make more touchdown receptions for more yards.
     
     
 3.  Who improved the most?
@@ -194,7 +206,7 @@ biography19 <- read_excel('cyclonesFootball2019.xlsx', sheet='Biography')
       
     ```
     
-    Landen Akers is the most improved player
+    Landen Akers is the most improved player. This is shown by comparing all players average reception yardage in 2019 with 2020. Akers had the greatest improvement of an average of 14 yards per game improvement. 
     
     
     
